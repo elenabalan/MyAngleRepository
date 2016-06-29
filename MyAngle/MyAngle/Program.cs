@@ -24,8 +24,7 @@ namespace MyAngle
         }
         public override string ToString()
         {
-            //return _degree + (char)176 + " " + _minute + "\' " + _second + "\"";
-            return _degree + " ° " + _minute + "\' " + _second + "\"";
+            return $"{_degree,3}°  {_minute, 3}\' {_second, 3}\"";
         }
 
         #region Any helpful function
@@ -54,12 +53,19 @@ namespace MyAngle
             _minute = (temp / 60) % 60;
             _degree = (temp / 3600) % 360;
         }
-        public int ToSeconds()
+        private int ToSeconds()
         {
-            var str = string.Format("{0:3}, {1:2}, {2:2}", _degree, _minute, _second);
             return _second + _minute * 60 + _degree * 3600;
         }
-       
+        public static Angle ToAngle(int n)
+        {
+            Angle a;
+            a._second = n % 60;
+            a._minute = (n / 60) % 60;
+            a._degree = (n / 3600) % 360;
+            return a;
+        }
+
         #endregion
 
         #region Constructors
@@ -103,6 +109,20 @@ namespace MyAngle
             a1._second -= a2._second;
             a1.ToPositivAngle();
             return a1;
+        }
+        public static Angle operator *(Angle a, int n)
+        {
+            a._degree *= n;
+            a._minute *= n;
+            a._second *= n;
+            a.ToPositivAngle();
+            return a;
+        }
+        public static Angle operator /(Angle a, int n)
+        {
+            int temp = (a.ToSeconds()) / n;
+            a = ToAngle(temp);
+            return a;
         }
         #endregion
 
@@ -183,6 +203,15 @@ namespace MyAngle
                     WriteLine("myAngle1     <  myAngle2 \n{0}  <  {1}", myAngle1.ToString(), myAngle2.ToString());
                 else
                     WriteLine("myAngle1     =  myAngle2 \n{0}  =  {1}", myAngle1.ToString(), myAngle2.ToString());
+            WriteLine("\n");
+
+            WriteLine("Increase an angle");
+            int n = 8;
+            WriteLine("{0}    * {1} = {2}", myAngle1, n, myAngle1 * n);
+
+            WriteLine("Decrease an angle");
+            WriteLine("{0}    / {1} = {2}", myAngle1, n, myAngle1 / n);
+
             ReadKey();
         }
     }
