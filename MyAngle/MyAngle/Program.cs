@@ -12,6 +12,7 @@ namespace MyAngle
         private int _degree;
         private int _minute;
         private int _second;
+
         #region Constructors
         public Angle(int degree, int minute, int second)
         {
@@ -34,6 +35,8 @@ namespace MyAngle
             _second = 0;
             ToAngle();
         }
+
+        #endregion
         public void ToAngle()
         {
             if (Math.Abs(_second) >= 60)
@@ -49,7 +52,21 @@ namespace MyAngle
             if (Math.Abs(_degree) >= 360)
                 _degree = _degree - 360 * (_degree / 360);
         }
-        #endregion
+        public void ToPositivAngle()
+        {
+
+            int temp = _second + _minute * 60 + _degree * 3600;
+            if (temp < 0)
+                temp += 360 * 3600;
+            _second = temp % 60;
+            // temp -= _second;
+            _minute = (temp / 60) % 60;
+            _degree = (temp / 3600) % 360;
+        }
+        public int ToSeconds()
+        {
+            return _second + _minute * 60 + _degree * 3600;
+        }
         public override string ToString()
         {
             //return _degree + (char)176 + " " + _minute + "\' " + _second + "\"";
@@ -74,7 +91,54 @@ namespace MyAngle
         }
         #endregion
         #region Logical Operators
-
+        public static bool operator ==(Angle a1, Angle a2)
+        {
+            return (a1._degree == a2._degree && a1._minute == a2._minute && a1._second == a2._second);
+        }
+        public static bool operator !=(Angle a1, Angle a2)
+        {
+            return !(a1._degree == a2._degree && a1._minute == a2._minute && a1._second == a2._second);
+        }
+        public static bool operator >(Angle a1,Angle a2)
+        {
+            a1.ToPositivAngle();
+            a2.ToPositivAngle();
+            if (a1.ToSeconds() > a2.ToSeconds())
+            {
+                return true;
+            }
+            else return false;
+        }
+        public static bool operator <(Angle a1, Angle a2)
+        {
+            a1.ToPositivAngle();
+            a2.ToPositivAngle();
+            if (a1.ToSeconds() < a2.ToSeconds())
+            {
+                return true;
+            }
+            else return false;
+        }
+        public static bool operator >=(Angle a1, Angle a2)
+        {
+            a1.ToPositivAngle();
+            a2.ToPositivAngle();
+            if (a1.ToSeconds() >= a2.ToSeconds())
+            {
+                return true;
+            }
+            else return false;
+        }
+        public static bool operator <=(Angle a1, Angle a2)
+        {
+            a1.ToPositivAngle();
+            a2.ToPositivAngle();
+            if (a1.ToSeconds() <= a2.ToSeconds())
+            {
+                return true;
+            }
+            else return false;
+        }
         #endregion
 
     }
@@ -82,14 +146,28 @@ namespace MyAngle
     {
         static void Main(string[] args)
         {
-            Angle myAngle = new Angle(60,10);
+            Angle myAngle = new Angle(100);
             WriteLine(myAngle);
-            Angle myAngle1 = new Angle(10,20);
+            myAngle.ToPositivAngle();
+            WriteLine(myAngle);
+            Angle myAngle1 = new Angle(20);
+            WriteLine(myAngle1);
+            myAngle1.ToPositivAngle();
             WriteLine(myAngle1);
 
             WriteLine("{0} + {1} = {2}", myAngle, myAngle1, myAngle + myAngle1);
             WriteLine("{0} - {1} = {2}", myAngle, myAngle1, myAngle - myAngle1);
-
+            WriteLine();
+            myAngle.ToPositivAngle();
+            WriteLine(myAngle);
+            myAngle1.ToPositivAngle();
+            WriteLine(myAngle1);
+            if (myAngle > myAngle1)
+                WriteLine("myAngle > myAngle1");
+            else
+                if (myAngle < myAngle1)
+                    WriteLine("myAngle < myAngle1");
+                else WriteLine("myAngle = myAngle1");
             ReadKey();
         }
     }
