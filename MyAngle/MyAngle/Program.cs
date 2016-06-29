@@ -133,50 +133,33 @@ namespace MyAngle
         }
         public static bool operator !=(Angle a1, Angle a2)
         {
-            return !(a1._degree == a2._degree && a1._minute == a2._minute && a1._second == a2._second);
+            return !(a1==a2);
         }
         public static bool operator >(Angle a1,Angle a2)
         {
             a1.ToPositivAngle();
             a2.ToPositivAngle();
-            if (a1.ToSeconds() > a2.ToSeconds())
-            {
-                return true;
-            }
-            else return false;
+            return (a1.ToSeconds() > a2.ToSeconds());
         }
         public static bool operator <(Angle a1, Angle a2)
         {
             a1.ToPositivAngle();
             a2.ToPositivAngle();
-            if (a1.ToSeconds() < a2.ToSeconds())
-            {
-                return true;
-            }
-            else return false;
+            return (a1.ToSeconds() < a2.ToSeconds());
         }
         public static bool operator >=(Angle a1, Angle a2)
         {
             a1.ToPositivAngle();
             a2.ToPositivAngle();
-            if (a1.ToSeconds() >= a2.ToSeconds())
-            {
-                return true;
-            }
-            else return false;
+            return (a1.ToSeconds() >= a2.ToSeconds());
         }
         public static bool operator <=(Angle a1, Angle a2)
         {
             a1.ToPositivAngle();
             a2.ToPositivAngle();
-            if (a1.ToSeconds() <= a2.ToSeconds())
-            {
-                return true;
-            }
-            else return false;
+            return (a1.ToSeconds() <= a2.ToSeconds());
         }
         #endregion
-
     }
     class Program
     {
