@@ -34,40 +34,20 @@ namespace MyAngle
             _second = 0;
             ToAngle();
         }
-        public void ToAngle ()
+        public void ToAngle()
         {
-            //if (_degree > 0)
-            //{
-                if (Math.Abs(_second) >= 60)
-                {
-                    _minute += _second / 60;
-                    _second = _second % 60;
-                }
-                if (Math.Abs(_minute) >= 60)
-                {
-                    _degree += _minute / 60;
-                    _minute = _minute % 60;
-                }
-                if (Math.Abs(_degree) >= 360)
-                    _degree = _degree - 360 * (_degree / 360);
-            //}
-            //else
-            //{
-            //    //int a= 360 * 60 * 60 - Math.Abs(_degree * 3600 + _minute * 60 +_second);
-            //    if (_second <= -60)
-            //    {
-            //        _minute += _second / 60;
-            //        _second = _second % 60;
-            //    }
-            //    if (_minute <= 60)
-            //    {
-            //        _degree += _minute / 60;
-            //        _minute = _minute % 60;
-            //    }
-            //    if (_degree <= 360)
-            //        _degree = _degree - 360 * (_degree / 360);
-            //}
-
+            if (Math.Abs(_second) >= 60)
+            {
+                _minute += _second / 60;
+                _second = _second % 60;
+            }
+            if (Math.Abs(_minute) >= 60)
+            {
+                _degree += _minute / 60;
+                _minute = _minute % 60;
+            }
+            if (Math.Abs(_degree) >= 360)
+                _degree = _degree - 360 * (_degree / 360);
         }
         #endregion
         public override string ToString()
@@ -76,7 +56,22 @@ namespace MyAngle
             return _degree + "degree  " + _minute + "\' " + _second + "\"";
         }
         #region Arithmetic Operators
-
+        public static Angle operator +(Angle a1,Angle a2)
+        {
+            a1._degree += a2._degree;
+            a1._minute += a2._minute;
+            a1._second += a2._second;
+            a1.ToAngle();
+            return a1;
+        }
+        public static Angle operator -(Angle a1, Angle a2)
+        {
+            a1._degree -= a2._degree;
+            a1._minute -= a2._minute;
+            a1._second -= a2._second;
+            a1.ToAngle();
+            return a1;
+        }
         #endregion
         #region Logical Operators
 
@@ -87,12 +82,13 @@ namespace MyAngle
     {
         static void Main(string[] args)
         {
-            Angle myAngle = new Angle(370, 66, 64);
+            Angle myAngle = new Angle(60,10);
             WriteLine(myAngle);
-            Angle myAngle1 = new Angle(-370);
-
+            Angle myAngle1 = new Angle(10,20);
             WriteLine(myAngle1);
 
+            WriteLine("{0} + {1} = {2}", myAngle, myAngle1, myAngle + myAngle1);
+            WriteLine("{0} - {1} = {2}", myAngle, myAngle1, myAngle - myAngle1);
 
             ReadKey();
         }
